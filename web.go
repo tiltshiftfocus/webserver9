@@ -1,12 +1,5 @@
 package main
 
-/* TODO
-* /system/information display more information
-* View template
-* WebSocket design
-* DB design
- */
-
 import (
 	"fmt"
 	"net/http"
