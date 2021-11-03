@@ -2,9 +2,8 @@ package controller
 
 import (
 	_ "strconv"
-
-	"jjwebserver/parameter"
-	. "jjwebserver/system/basecontroller"
+	"webserver/parameter"
+	. "webserver/system/basecontroller"
 )
 
 type Info struct{ BaseController }

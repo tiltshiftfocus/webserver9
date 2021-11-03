@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"jjwebserver/system/basecontroller"
+	"webserver/system/basecontroller"
 
 	"github.com/gorilla/mux"
 )

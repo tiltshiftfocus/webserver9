@@ -12,10 +12,9 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-
-	"jjwebserver/controller"
-	"jjwebserver/parameter"
-	Web "jjwebserver/system/Web"
+	"webserver/controller"
+	"webserver/parameter"
+	Web "webserver/system/Web"
 )
 
 type RC = Web.RouteConfig

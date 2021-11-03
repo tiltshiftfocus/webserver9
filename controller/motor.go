@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	_ "time"
-
-	. "jjwebserver/system/basecontroller"
+	. "webserver/system/basecontroller"
 )
 
 type Motor struct {
