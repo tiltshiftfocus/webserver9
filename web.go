@@ -1,7 +1,6 @@
 package main
 
 /* TODO
-* add PathPrefix
 * /system/information display more information
 * View template
 * WebSocket design
@@ -21,11 +20,11 @@ type RC = Web.RouteConfig
 
 func main() {
 	web := Web.Router()
-	web.AllowDomains([]string{"{subdomain}.grannygame.io", "52.77.146.102"})
 	web.SupportParameters(
 		new(parameter.Username),
 		new(parameter.Password))
 
+	web.AllowDomains([]string{"52.77.146.102"})
 	web.Route([]RC{
 		{"/testinfo", "Info"},
 		{"/testinfo2", "Info2"},
@@ -37,6 +36,17 @@ func main() {
 		{"/testgetpost", "TestGetPost"},
 		{"/matchtest/{n:.*}", "Index"},
 	}, new(controller.Motor))
+
+	web.AllowDomains([]string{"{subdomain}.grannygame.io"})
+	web.Route([]RC{
+		{"/singleinfo", "Info"},
+	}, new(controller.Info))
+
+	web.AllowAllDomains()
+	web.Route([]RC{
+		{"/defaultinfo", "Info"},
+	}, new(controller.Info))
+
 
 	web.RouteExactly("/{n:.*}", Web.PageNotFoundHandler)
 	server := &http.Server{
