@@ -21,7 +21,7 @@ type RC = Web.RouteConfig
 
 func main() {
 	web := Web.Router()
-	web.AllowDomains([]string{"test1.grannygame.io", "52.77.146.102"})
+	web.AllowDomains([]string{"{subdomain}.grannygame.io", "52.77.146.102"})
 	web.SupportParameters(
 		new(parameter.Username),
 		new(parameter.Password))

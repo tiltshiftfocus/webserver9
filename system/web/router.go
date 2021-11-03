@@ -18,7 +18,7 @@ func Router() *router {
 	muxRouter := mux.NewRouter()
 	instance := &router{
 		muxRouter: muxRouter,
-		mrht: mainRouteHandlerType{muxRouter, paramtype{}},
+		mrht: mainRouteHandlerType{muxRouter: muxRouter, pt: paramtype{}},
 	}
 	sys := systeminfo{muxRouter}
 	instance.mrht.muxRouteExactly("/system/information", sys.pageShowRouteInfoHandler)
@@ -80,26 +80,7 @@ func (self *router) RouteByController(path string, icontroller interface{}) {
 	self.Route(rc, icontroller)
 }
 func (self *router) GetRouter() *mux.Router { return self.muxRouter }
-func (self *router) AllowDomains(domains []string) {
-	if len(domains) > 0 {
-		self.muxRouter.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				for idx := range domains {
-					domain := &domains[idx]
-					host := r.Host
-					if i := strings.Index(host, ":"); i != -1 {
-						host = host[:i]
-					}
-					if host == *domain {
-						next.ServeHTTP(w, r)
-						return
-					}
-				}
-				http.Error(w, "Forbidden", http.StatusForbidden)
-			})
-		})
-	}
-}
+func (self *router) AllowDomains(domains []string) { self.mrht.domains = domains }
 func (self *router) SupportParameters(in ...interface{}) {
 	self.mrht.pt.Process(in...)
 	//self.mrht.pt.display()

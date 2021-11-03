@@ -9,6 +9,7 @@ import (
 type mainRouteHandlerType struct {
 	muxRouter *mux.Router
 	pt paramtype
+	domains []string
 }
 func (self *mainRouteHandlerType) addToRoute(path string, icontroller interface{}, post http_method, get http_method, action string) {
 	storage_name := getRouteName()
@@ -16,7 +17,13 @@ func (self *mainRouteHandlerType) addToRoute(path string, icontroller interface{
 	self.addMuxRoute(path, storage_name)
 }
 func (self *mainRouteHandlerType) addMuxRoute(path string, name string) {
-	self.muxRouteExactly(path+"{n:\\/?}", self.mainRouteHandler).Name(name)
+	if(len(self.domains) == 0) {
+		self.muxRouteExactly(path+"{n:\\/?}", self.mainRouteHandler).Name(name)
+		return
+	}
+	for _, domain := range self.domains {
+		self.muxRouteExactly(path+"{n:\\/?}", self.mainRouteHandler).Name(name).Host(domain)
+	}
 }
 func (self *mainRouteHandlerType) muxRouteExactly(path string, f func (http.ResponseWriter, *http.Request)) *mux.Route {
 	return self.muxRouter.HandleFunc(path, f)
