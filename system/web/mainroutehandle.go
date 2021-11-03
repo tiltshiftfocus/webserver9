@@ -29,6 +29,7 @@ func (self *mainRouteHandlerType) addMuxRoute(path string, name string) {
 		return
 	}
 	for _, domain := range self.domains {
+		if(domain == "") { continue }
 		self.muxRouteExactly(path+"{n:\\/?}", self.mainRouteHandler).Name(name).Host(domain)
 	}
 }
