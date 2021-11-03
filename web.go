@@ -14,7 +14,7 @@ import (
 	"time"
 	"webserver/controller"
 	"webserver/parameter"
-	Web "webserver/system/Web"
+	Web "webserver/system/web"
 )
 
 type RC = Web.RouteConfig
