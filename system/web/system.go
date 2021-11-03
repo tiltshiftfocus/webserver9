@@ -9,13 +9,7 @@ import (
 
 var muxRouteCount int
 type http_method map[string]string
-var storage = map[string]direction{}
-type direction struct { 
-	ptr *interface{}
-	post *http_method
-	get *http_method
-	action *string
-}
+
 
 func getRouteName() string {
 	muxRouteCount++

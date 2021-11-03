@@ -6,14 +6,21 @@ import (
 	"strconv"
 )
 
+type direction struct { 
+	ptr *interface{}
+	post *http_method
+	get *http_method
+	action *string
+}
 type mainRouteHandlerType struct {
 	muxRouter *mux.Router
 	pt paramtype
 	domains []string
+	storage map[string]direction
 }
 func (self *mainRouteHandlerType) addToRoute(path string, icontroller interface{}, post http_method, get http_method, action string) {
 	storage_name := getRouteName()
-	storage[storage_name] = direction{&icontroller, &post, &get, &action}
+	self.storage[storage_name] = direction{&icontroller, &post, &get, &action}
 	self.addMuxRoute(path, storage_name)
 }
 func (self *mainRouteHandlerType) addMuxRoute(path string, name string) {
@@ -32,7 +39,7 @@ func (self *mainRouteHandlerType) muxRouteIgnoreSlash(path string, f func (http.
 	return self.muxRouteExactly(path+"{n:\\/?}", f)
 }
 func (self *mainRouteHandlerType) mainRouteHandler(w http.ResponseWriter, r *http.Request) {
-	if store, ok := storage[mux.CurrentRoute(r).GetName()]; ok {
+	if store, ok := self.storage[mux.CurrentRoute(r).GetName()]; ok {
 		va := reflect.ValueOf(*store.ptr)
 		v := reflect.New(va.Type().Elem())
 		v.Elem().FieldByName("Response").Set(reflect.ValueOf(interface{}(w)))

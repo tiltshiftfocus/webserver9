@@ -18,7 +18,7 @@ func Router() *router {
 	muxRouter := mux.NewRouter()
 	instance := &router{
 		muxRouter: muxRouter,
-		mrht: mainRouteHandlerType{muxRouter: muxRouter, pt: paramtype{}},
+		mrht: mainRouteHandlerType{muxRouter: muxRouter, pt: paramtype{}, storage: map[string]direction{}},
 	}
 	sys := systeminfo{muxRouter}
 	instance.mrht.muxRouteExactly("/system/information", sys.pageShowRouteInfoHandler)
