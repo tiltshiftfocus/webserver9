@@ -1,3 +1,3 @@
 #!/bin/bash
 #go run web.go
-#go run .
+/root/go/bin/go1.14 run .
