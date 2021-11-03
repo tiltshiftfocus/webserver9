@@ -24,7 +24,7 @@ func main() {
 		new(parameter.Username),
 		new(parameter.Password))
 
-	web.AllowDomains([]string{"52.77.146.102"})
+	web.AllowDomains("52.77.146.102")
 	web.Route([]RC{
 		{"/testinfo", "Info"},
 		{"/testinfo2", "Info2"},
