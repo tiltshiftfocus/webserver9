@@ -32,7 +32,8 @@ func (s *systeminfo) getRouteInfo() string {
 		host, _ := route.GetHostTemplate();
 		if  host == "" { host = ".*" }
 		path, _ := route.GetPathTemplate()
-		msg += fmt.Sprintf("<div>[%s][%s]</div>", host, path)
+		name := route.GetName();
+		msg += fmt.Sprintf("<div>%s, [%s][%s]</div>", name, host, path)
 		return nil
 	})
 	return msg
