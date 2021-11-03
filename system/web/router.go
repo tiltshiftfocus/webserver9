@@ -16,7 +16,10 @@ type RouteConfig struct {
 
 func Router() *router {
 	muxRouter := mux.NewRouter()
-	instance := &router{muxRouter, mainRouteHandlerType{muxRouter, paramtype{}}}
+	instance := &router{
+		muxRouter: muxRouter,
+		mrht: mainRouteHandlerType{muxRouter, paramtype{}},
+	}
 	sys := systeminfo{muxRouter}
 	instance.mrht.muxRouteExactly("/system/information", sys.pageShowRouteInfoHandler)
 	return instance
@@ -25,6 +28,7 @@ func Router() *router {
 type router struct {
 	muxRouter *mux.Router
 	mrht      mainRouteHandlerType
+	pathPrefixValue string
 }
 
 func (self *router) Route(routeConfig interface{}, icontroller interface{}) {
@@ -39,7 +43,7 @@ func (self *router) Route(routeConfig interface{}, icontroller interface{}) {
 		return
 	}
 	for _, row := range rc {
-		path := row.Path
+		path := self.pathPrefixValue + row.Path
 		action := row.Action
 		if !isMethodExist(&icontroller, action) {
 			errorLog("Web.RouteConfig, path:%s controller:%T action:%s not found! ", path, icontroller, action)
@@ -50,6 +54,7 @@ func (self *router) Route(routeConfig interface{}, icontroller interface{}) {
 		get, post := retrieveMethodParams(&icontroller, action)
 		self.mrht.addToRoute(path, icontroller, post, get, action)
 	}
+	self.resetVariable()
 }
 func (self *router) RouteExactly(path string, f func(http.ResponseWriter, *http.Request)) *mux.Route {
 	return self.mrht.muxRouteExactly(path, f)
@@ -98,4 +103,11 @@ func (self *router) AllowDomains(domains []string) {
 func (self *router) SupportParameters(in ...interface{}) {
 	self.mrht.pt.Process(in...)
 	//self.mrht.pt.display()
+}
+func (self *router) PathPrefix(path string) *router {
+	self.pathPrefixValue = path
+	return self
+}
+func (self *router) resetVariable() {
+	self.pathPrefixValue = ""
 }
