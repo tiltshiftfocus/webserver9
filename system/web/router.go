@@ -81,6 +81,7 @@ func (self *router) RouteByController(path string, icontroller interface{}) {
 }
 func (self *router) GetRouter() *mux.Router { return self.muxRouter }
 func (self *router) AllowDomains(domains []string) { self.mrht.domains = domains }
+func (self *router) AllowAllDomains() { self.mrht.domains = []string{} }
 func (self *router) SupportParameters(in ...interface{}) {
 	self.mrht.pt.Process(in...)
 	//self.mrht.pt.display()
